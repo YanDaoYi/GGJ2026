@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Platformer.Gameplay;
@@ -30,10 +30,15 @@ namespace Platformer.Mechanics
 
         public JumpState jumpState = JumpState.Grounded;
         private bool stopJump;
-        /*internal new*/ public Collider2D collider2d;
-        /*internal new*/ public AudioSource audioSource;
+        /*internal new*/
+        public Collider2D collider2d;
+        public Collider2D collider2D_Inner;
+        /*internal new*/
+        public AudioSource audioSource;
         public Health health;
         public bool controlEnabled = true;
+
+        public ContactFilter2D gourndFilter;
 
         bool jump;
         Vector2 move;
@@ -51,12 +56,13 @@ namespace Platformer.Mechanics
             health = GetComponent<Health>();
             audioSource = GetComponent<AudioSource>();
             collider2d = GetComponent<Collider2D>();
+            collider2D_Inner = transform.Find("InnerCollider").GetComponent<Collider2D>();
             spriteRenderer = GetComponent<SpriteRenderer>();
             animator = GetComponent<Animator>();
 
             m_MoveAction = InputSystem.actions.FindAction("Player/Move");
             m_JumpAction = InputSystem.actions.FindAction("Player/Jump");
-            
+
             m_MoveAction.Enable();
             m_JumpAction.Enable();
         }
@@ -80,6 +86,16 @@ namespace Platformer.Mechanics
             }
             UpdateJumpState();
             base.Update();
+        }
+        protected override void FixedUpdate()
+        {
+            base.FixedUpdate();
+
+            Collider2D[] results = new Collider2D[1];
+            if (Physics2D.OverlapCollider(collider2D_Inner, gourndFilter, results) > 0)
+            {
+                Simulation.Schedule<PlayerDeath>();
+            }
         }
 
         void UpdateJumpState()

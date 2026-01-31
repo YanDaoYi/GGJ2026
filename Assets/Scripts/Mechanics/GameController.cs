@@ -46,7 +46,7 @@ namespace Platformer.Mechanics
             OnLevelPassed?.Invoke();
         }
 
-        public void FailedThiwLevel()
+        public void FailedThisLevel()
         {
             OnLevelFailed?.Invoke();
         }

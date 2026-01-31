@@ -1,6 +1,7 @@
 using Platformer.Core;
 using Platformer.Mechanics;
 using Platformer.Model;
+using System.Threading.Tasks;
 
 namespace Platformer.Gameplay
 {
@@ -11,7 +12,7 @@ namespace Platformer.Gameplay
     {
         PlatformerModel model = Simulation.GetModel<PlatformerModel>();
 
-        public override void Execute()
+        public override async void Execute()
         {
             var player = model.player;
             player.collider2d.enabled = true;
@@ -22,8 +23,6 @@ namespace Platformer.Gameplay
             player.Teleport(model.spawnPoint.transform.position);
             player.jumpState = PlayerController.JumpState.Grounded;
             player.animator.SetBool("dead", false);
-            model.virtualCamera.Follow = player.transform;
-            model.virtualCamera.LookAt = player.transform;
             Simulation.Schedule<EnablePlayerInput>(2f);
         }
     }
