@@ -89,7 +89,7 @@ namespace Assets.Scripts.Mechanics
             isOn = m_SwitchAction.IsPressed();
             if (isOn != isOn_last)
             {
-                Debug.Log($"SwitchCtrl FixedUpdate isOn={isOn}");
+                //Debug.Log($"SwitchCtrl FixedUpdate isOn={isOn}");
                 RebuildTrueWorld();
             }
 
@@ -139,6 +139,7 @@ namespace Assets.Scripts.Mechanics
             if (!maskMonoSet.Contains(maskMono))
             {
                 maskMono.EventEmitter.TriggerEnter += OnEnterMask;
+                maskMono.EventEmitter.TriggerExit += OnExitMask;
                 maskMonoSet.Add(maskMono);
             }
         }
@@ -148,17 +149,20 @@ namespace Assets.Scripts.Mechanics
             if (maskMonoSet.Contains(maskMono))
             {
                 maskMono.EventEmitter.TriggerEnter -= OnEnterMask;
+                maskMono.EventEmitter.TriggerExit -= OnExitMask;
                 maskMonoSet.Remove(maskMono);
             }
         }
 
         void OnEnterMask(Collider2D collider)
         {
+            Debug.Log("OnEnterMask");
             inMaskCount++;
         }
 
         void OnExitMask(Collider2D collider)
         {
+            Debug.Log("OnExitMask");
             inMaskCount--;
 
             //离开最后一个遮罩时
