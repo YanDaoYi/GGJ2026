@@ -42,14 +42,16 @@ namespace Assets.Scripts.Mechanics
         TilemapRenderer[] worldOuterTileMapRenderers;
         Dictionary<Vector2, List<ItemInfo>> ItemInfoDic = new();
 
+        SpriteRenderer playerSpriteRenderer;
+
         int inMaskFullyCount = 0;
         bool inOuter = true;//当前在表世界
 
         protected override void OnInit()
         {
             m_SwitchAction = InputSystem.actions.FindAction("Player/Switch");
-
             m_SwitchAction.Enable();
+            playerSpriteRenderer = GameObject.FindGameObjectWithTag("Player").GetComponent<SpriteRenderer>();
 
             InitMap();
             RebuildTrueWorld();
@@ -175,6 +177,9 @@ namespace Assets.Scripts.Mechanics
             {
                 tileMapRenderer.maskInteraction = inOuter ? SpriteMaskInteraction.VisibleOutsideMask : SpriteMaskInteraction.VisibleInsideMask;
             }
+
+            //根据isOn和inMaskFullyCount来控制player的遮罩交互
+            playerSpriteRenderer.maskInteraction = isOn && inMaskFullyCount > 0 ? SpriteMaskInteraction.VisibleInsideMask : SpriteMaskInteraction.None;
         }
 
         void RebuildTrueWorld()
@@ -265,6 +270,7 @@ namespace Assets.Scripts.Mechanics
                     inOuter = !inOuter;
                     RebuildTrueWorld();
                 }
+
             }
         }
 
