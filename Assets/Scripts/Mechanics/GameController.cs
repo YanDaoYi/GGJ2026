@@ -20,6 +20,8 @@ namespace Platformer.Mechanics
         //conveniently configured inside the inspector.
         public PlatformerModel model = Simulation.GetModel<PlatformerModel>();
 
+        public event System.Action OnLevelPassed = delegate { };
+
         void OnEnable()
         {
             Instance = this;
@@ -33,6 +35,12 @@ namespace Platformer.Mechanics
         void Update()
         {
             if (Instance == this) Simulation.Tick();
+        }
+
+        //顺利通过本关
+        public void PassThisLevel()
+        {
+            OnLevelPassed?.Invoke();
         }
     }
 }
