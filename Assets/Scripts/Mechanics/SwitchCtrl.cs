@@ -34,7 +34,7 @@ namespace Assets.Scripts.Mechanics
         List<Tilemap> worldOuterTilemaps = new();
         List<Tilemap> worldTrueTilemaps = new();
 
-        int inMaskCount = 0;
+        int inMaskFullyCount = 0;
         bool inOuter = true;//当前在表世界
         bool maskIsChange = false;
 
@@ -138,8 +138,8 @@ namespace Assets.Scripts.Mechanics
         {
             if (!maskMonoSet.Contains(maskMono))
             {
-                maskMono.EventEmitter.TriggerEnter += OnEnterMask;
-                maskMono.EventEmitter.TriggerExit += OnExitMask;
+                maskMono.EventEmitter.TriggerEnter_Fully += OnEnterMask_Fully;
+                maskMono.EventEmitter.TriggerExit_Fully += OnExitMask_Fully;
                 maskMonoSet.Add(maskMono);
             }
         }
@@ -148,25 +148,25 @@ namespace Assets.Scripts.Mechanics
         {
             if (maskMonoSet.Contains(maskMono))
             {
-                maskMono.EventEmitter.TriggerEnter -= OnEnterMask;
-                maskMono.EventEmitter.TriggerExit -= OnExitMask;
+                maskMono.EventEmitter.TriggerEnter_Fully -= OnEnterMask_Fully;
+                maskMono.EventEmitter.TriggerExit_Fully -= OnExitMask_Fully;
                 maskMonoSet.Remove(maskMono);
             }
         }
 
-        void OnEnterMask(Collider2D collider)
+        void OnEnterMask_Fully(Collider2D collider)
         {
             Debug.Log("OnEnterMask");
-            inMaskCount++;
+            inMaskFullyCount++;
         }
 
-        void OnExitMask(Collider2D collider)
+        void OnExitMask_Fully(Collider2D collider)
         {
             Debug.Log("OnExitMask");
-            inMaskCount--;
+            inMaskFullyCount--;
 
             //离开最后一个遮罩时
-            if (inMaskCount == 0)
+            if (inMaskFullyCount == 0)
             {
                 if (isOn)
                 {
