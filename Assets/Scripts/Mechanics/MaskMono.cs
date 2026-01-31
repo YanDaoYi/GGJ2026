@@ -7,10 +7,11 @@ namespace Assets.Scripts.Mechanics
     public class MaskMono : MonoBehaviour
     {
         public Trigger2DEventEmitter EventEmitter { get; private set; }
+        BoxCollider2D _collider;
 
         void Awake()
         {
-            EventEmitter = GetComponent<Trigger2DEventEmitter>();
+            EventEmitter = GetComponentInChildren<Trigger2DEventEmitter>();
             Assert.IsNotNull(EventEmitter);
             SwitchCtrl.Singleton.RegisterMask(this);
         }
@@ -20,9 +21,15 @@ namespace Assets.Scripts.Mechanics
         }
         private void OnDrawGizmos()
         {
+            if (_collider == null) return;
             Gizmos.color = Color.green;
-            Vector3 lossyScale = transform.lossyScale;
-            Gizmos.DrawWireCube(transform.position, lossyScale);
+            Vector3 lossyScale = _collider.transform.lossyScale;
+            Gizmos.DrawWireCube(_collider.transform.position, lossyScale);
+        }
+
+        private void OnValidate()
+        {
+            _collider = GetComponentInChildren<BoxCollider2D>();
         }
     }
 }
