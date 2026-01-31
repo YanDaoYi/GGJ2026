@@ -9,8 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4166097067640136502}
-  - component: {fileID: 3361611273733521180}
-  - component: {fileID: 6614004888360041359}
+  - component: {fileID: 7298421013933339760}
   m_Layer: 6
   m_Name: Destination
   m_TagString: Untagged
@@ -35,7 +34,7 @@ Transform:
   - {fileID: 9176210872690421774}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3361611273733521180
+--- !u!114 &7298421013933339760
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -44,17 +43,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 340417382508440564}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b0c4128fff5e9b4ea79eed7508af987, type: 3}
+  m_Script: {fileID: 11500000, guid: 6ae333895969a39469335fbc6decc0d6, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Mechanics.MaskMono
---- !u!33 &6614004888360041359
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 340417382508440564}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Mechanics.MechanismMono_Destination
 --- !u!1 &817283212031286658
 GameObject:
   m_ObjectHideFlags: 0
@@ -118,7 +109,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
