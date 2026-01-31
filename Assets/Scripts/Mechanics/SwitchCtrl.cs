@@ -11,8 +11,10 @@ namespace Assets.Scripts.Mechanics
     {
         [SerializeField]
         Grid world_Inner;
+        public Grid World_Inner => world_Inner;
         [SerializeField]
         Grid world_Outer;
+        public Grid World_Outer => world_Outer;
         [SerializeField]
         Grid world_True;
         [SerializeField]
