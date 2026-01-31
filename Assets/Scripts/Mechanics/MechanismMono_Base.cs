@@ -44,6 +44,7 @@ namespace Assets.Scripts.Mechanics
 
     public enum EMechanismType
     {
-        Destination
+        Destination,
+        Token
     }
 }
