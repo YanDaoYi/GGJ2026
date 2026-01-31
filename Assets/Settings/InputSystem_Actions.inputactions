@@ -43,7 +43,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "KillSelf",
+                    "name": "Reset",
                     "type": "Button",
                     "id": "da22c9d2-31c6-48ee-a0e3-3868de94570c",
                     "expectedControlType": "",
@@ -258,7 +258,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
-                    "action": "KillSelf",
+                    "action": "Reset",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
