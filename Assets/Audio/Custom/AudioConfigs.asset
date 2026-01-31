@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfc8df723729ea24b98922735315fb79, type: 3}
+  m_Name: AudioConfigs
+  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Audio.AudioConfigs
+  InnerAudioConfigs:
+    walkAudioList:
+    - {fileID: 8300000, guid: f3e6468ccb8c2a84cbe914df5c3bfa67, type: 3}
+    - {fileID: 8300000, guid: aaf60d78c44b9914dbc8a6775be2978d, type: 3}
+    - {fileID: 8300000, guid: 49588629f90a0e24fb85ded0520fce4a, type: 3}
+    - {fileID: 8300000, guid: ad55de48778a1ef498a01b299dbf4572, type: 3}
+    - {fileID: 8300000, guid: cfe8f601706f0e34d98b916dda3daf89, type: 3}
+    - {fileID: 8300000, guid: ea2329af2e2265142a578656a920cbe1, type: 3}
+    - {fileID: 8300000, guid: a8caeb54b4158b744a0889ee6cf391da, type: 3}
+    - {fileID: 8300000, guid: 9966ceaa6e0990b45870d4ec2c30440e, type: 3}
+    - {fileID: 8300000, guid: 62dd9feddbf0bb9488c970dd09ef65f6, type: 3}
+    - {fileID: 8300000, guid: d81d1013e6969614d8a0a9420db91ca5, type: 3}
+    landingAudio: {fileID: 8300000, guid: f3ec5d90a7ad21b409056c79b926937b, type: 3}
+    deathAudio: {fileID: 8300000, guid: c4f647f3ea6448843ae2a9d5668bf508, type: 3}
+    jumpAudio: {fileID: 8300000, guid: 5a282e6b0b618fc4983973b9ad6c7c10, type: 3}
+    bgAudio: {fileID: 8300000, guid: 9bf561c508f8e1445ae092cb5278c0ab, type: 3}
+    maskOpenAudio: {fileID: 8300000, guid: 94147094045c85a4fb3f007d560cafb4, type: 3}
+    maskContinueAudio: {fileID: 8300000, guid: 50ea49f99d920514c8c22b04e5342e92, type: 3}
+    maskCloseAudio: {fileID: 8300000, guid: fc96bd6f16a115f4791151d8b668d451, type: 3}
+  OuterAudioConfigs:
+    walkAudioList:
+    - {fileID: 8300000, guid: 3cd7675d021eeac4fab3eef3d4185ee1, type: 3}
+    - {fileID: 8300000, guid: 6897d212cf085b54ca511b25cd5e888f, type: 3}
+    - {fileID: 8300000, guid: e074b514c0f15a3488bb10f2eca9a50e, type: 3}
+    - {fileID: 8300000, guid: 95a8e066cc42cfa4f8df37c4187c0176, type: 3}
+    - {fileID: 8300000, guid: af989aee61bb60e47b1d7dca2e14c976, type: 3}
+    - {fileID: 8300000, guid: 88972351b9a58fc49939ed2de980601f, type: 3}
+    - {fileID: 8300000, guid: ffe81066581eb564d9776054cc5d9705, type: 3}
+    - {fileID: 8300000, guid: c9c1ea1980770d745a8c64d6f1138944, type: 3}
+    - {fileID: 8300000, guid: 45c3acc185a236f4cb95e34828929228, type: 3}
+    landingAudio: {fileID: 8300000, guid: 044c2431f0c5ca2428facabbd3f26539, type: 3}
+    deathAudio: {fileID: 8300000, guid: c84c1a8ff3b3c3b49b4d2cb210597467, type: 3}
+    jumpAudio: {fileID: 8300000, guid: ff0b6b4176bae804aa12b9aeb245101b, type: 3}
+    bgAudio: {fileID: 8300000, guid: 0f607e8fb0eb6f846b67e340571393b7, type: 3}
+    maskOpenAudio: {fileID: 8300000, guid: b4f2300cab603e14e830b769d43a9007, type: 3}
+    maskContinueAudio: {fileID: 8300000, guid: 50ea49f99d920514c8c22b04e5342e92, type: 3}
+    maskCloseAudio: {fileID: 8300000, guid: fc96bd6f16a115f4791151d8b668d451, type: 3}
+  shuttleAudio: {fileID: 8300000, guid: 1f96c60c09041d04da7520ec42a240cb, type: 3}
+  reviveAudio: {fileID: 8300000, guid: a56d40706b34f6c47aedfe56143c715e, type: 3}
+  doorSuccessAudio: {fileID: 8300000, guid: 9fce14786bf60194d8a10247d26932fa, type: 3}
+  doorFailAudio: {fileID: 8300000, guid: db2a312c1a9ebdf4bad07348652aac8c, type: 3}
+  pickItemAudio: {fileID: 8300000, guid: 915ef4d9ac5d88f4e81531ab887611b9, type: 3}
