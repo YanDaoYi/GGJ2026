@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using Platformer.Gameplay;
 using UnityEngine;
@@ -14,6 +14,7 @@ namespace Platformer.Mechanics
     {
         void OnTriggerEnter2D(Collider2D collider)
         {
+            Debug.Log("DeathZone triggered");
             var p = collider.gameObject.GetComponent<PlayerController>();
             if (p != null)
             {
