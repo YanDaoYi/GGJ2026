@@ -16,6 +16,10 @@ namespace Assets.Scripts.Mechanics
         [SerializeField]
         Grid world_True;
         [SerializeField]
+        Transform InnerItemsRoot;
+        [SerializeField]
+        Transform OuterItemsRoot;
+        [SerializeField]
         Vector2Int minGridPos;
         [SerializeField]
         Vector2Int maxGridPos;
@@ -33,6 +37,7 @@ namespace Assets.Scripts.Mechanics
         List<Tilemap> worldInnerTilemaps = new();
         List<Tilemap> worldOuterTilemaps = new();
         List<Tilemap> worldTrueTilemaps = new();
+        Dictionary<Vector2, List<ItemInfo>> ItemInfoDic = new();
 
         int inMaskFullyCount = 0;
         bool inOuter = true;//当前在表世界
@@ -74,12 +79,39 @@ namespace Assets.Scripts.Mechanics
             minGridPos = new Vector2Int(min.x, min.y) - gridPadding;
             maxGridPos = new Vector2Int(max.x, max.y) + gridPadding;
 
+            //收集所有Items
+            ItemInfoDic.Clear();
+            CollectItems(InnerItemsRoot, true);
+            CollectItems(OuterItemsRoot, false);
+
             static void CollectTilemaps(Grid grid, List<Tilemap> tilemapSet)
             {
                 Tilemap[] tilemaps = grid.GetComponentsInChildren<Tilemap>();
                 foreach (var tilemap in tilemaps)
                 {
                     tilemapSet.Add(tilemap);
+                }
+            }
+
+            void CollectItems(Transform root, bool isInner)
+            {
+                foreach (Transform child in root)
+                {
+                    //计算所在格子中心点坐标
+                    Vector3Int gridPos3D = world_Inner.WorldToCell(child.position);
+                    Vector2 gridPos = new Vector2(gridPos3D.x, gridPos3D.y);
+
+                    List<ItemInfo> list = null;
+                    if (!ItemInfoDic.TryGetValue(gridPos, out list))
+                    {
+                        ItemInfoDic[gridPos] = list = new();
+                    }
+
+                    list.Add(new ItemInfo
+                    {
+                        itemTf = child,
+                        isInner = isInner
+                    });
                 }
             }
         }
@@ -101,16 +133,26 @@ namespace Assets.Scripts.Mechanics
             for (int x = minGridPos.x; x <= maxGridPos.x; x++)
                 for (int y = minGridPos.y; y <= maxGridPos.y; y++)
                 {
-                    Vector3Int gridPos = new(x, y, 0);
+                    Vector3Int gridPos3D = new(x, y, 0);
+                    Vector2Int gridPos = new(x, y);
                     // world pos
-                    Vector3 centerWorldPos = world_Inner.CellToWorld(gridPos) + world_Inner.cellSize * 0.5f;
+                    Vector3 centerWorldPos = world_Inner.CellToWorld(gridPos3D) + world_Inner.cellSize * 0.5f;
                     bool showInner = IsOn && CheckInMask(centerWorldPos);
                     if (!inOuter) showInner = !showInner;
 
                     for (int i = 0; i < worldTrueTilemaps.Count; i++)
                     {
-                        TileBase tileBase = showInner ? worldInnerTilemaps[i].GetTile(gridPos) : worldOuterTilemaps[i].GetTile(gridPos);
-                        worldTrueTilemaps[i].SetTile(gridPos, tileBase);
+                        TileBase tileBase = showInner ? worldInnerTilemaps[i].GetTile(gridPos3D) : worldOuterTilemaps[i].GetTile(gridPos3D);
+                        worldTrueTilemaps[i].SetTile(gridPos3D, tileBase);
+                    }
+
+                    //处理物体
+                    if (ItemInfoDic.TryGetValue(gridPos, out var itemList))
+                    {
+                        foreach (var itemInfo in itemList)
+                        {
+                            itemInfo.itemTf.gameObject.SetActive(!(showInner ^ itemInfo.isInner));
+                        }
                     }
                 }
         }
@@ -175,5 +217,11 @@ namespace Assets.Scripts.Mechanics
                 }
             }
         }
+    }
+
+    struct ItemInfo
+    {
+        public Transform itemTf;
+        public bool isInner;
     }
 }
