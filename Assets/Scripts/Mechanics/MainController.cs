@@ -20,8 +20,6 @@ namespace Platformer.Mechanics
 
         protected override void OnInit()
         {
-            EnterLevel(0);
-
             m_ResetAction = InputSystem.actions.FindAction("Player/Reset");
             m_ResetAction.Enable();
         }
@@ -34,7 +32,7 @@ namespace Platformer.Mechanics
             }
         }
 
-        async void EnterLevel(int idx)
+        public async void EnterLevel(int idx)
         {
             curLevel = idx;
             if (curLevel < levelNames.Count)

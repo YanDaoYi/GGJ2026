@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using Platformer.Mechanics;
 using UnityEngine;
 using UnityToolkit;
 
@@ -10,23 +9,23 @@ namespace Platformer.UI
     /// </summary>
     public class MainUIController : MonoSingleton<MainUIController>
     {
-        protected override bool DontDestroyOnLoad() =>true;
+        protected override bool DontDestroyOnLoad() => true;
 
         public GameObject[] panels;
 
-        public void SetActivePanel(int index)
+        public void SetRtfActiveOn(RectTransform rtf)
         {
-            for (var i = 0; i < panels.Length; i++)
-            {
-                var active = i == index;
-                var g = panels[i];
-                if (g.activeSelf != active) g.SetActive(active);
-            }
+            rtf.gameObject.SetActive(true);
         }
 
-        void OnEnable()
+        public void SetRtfActiveOff(RectTransform rtf)
         {
-            SetActivePanel(0);
+            rtf.gameObject.SetActive(false);
+        }
+
+        public void StartGame()
+        {
+            MainController.Singleton.EnterLevel(0);
         }
     }
 }
