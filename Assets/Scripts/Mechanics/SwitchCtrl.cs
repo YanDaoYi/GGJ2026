@@ -41,7 +41,6 @@ namespace Assets.Scripts.Mechanics
 
         int inMaskFullyCount = 0;
         bool inOuter = true;//当前在表世界
-        bool maskIsChange = false;
 
         protected override void OnInit()
         {
@@ -51,6 +50,11 @@ namespace Assets.Scripts.Mechanics
 
             InitMap();
             RebuildTrueWorld();
+        }
+
+        protected override void OnDispose()
+        {
+            base.OnDispose();
         }
 
         void InitMap()

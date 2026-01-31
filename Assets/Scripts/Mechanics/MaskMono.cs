@@ -17,7 +17,10 @@ namespace Assets.Scripts.Mechanics
         }
         void OnDestroy()
         {
-            SwitchCtrl.Singleton.UnregisterMask(this);
+            if (SwitchCtrl.SingletonNullable)
+            {
+                SwitchCtrl.Singleton.UnregisterMask(this);
+            }
         }
         private void OnDrawGizmos()
         {

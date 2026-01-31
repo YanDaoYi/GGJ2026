@@ -9,7 +9,10 @@ namespace Assets.Scripts.Mechanics
 
         protected override void TriggerEnterHandle(Collider2D other)
         {
-            GameController.Instance.PassThisLevel();
+            if (GameController.Instance.PickedUpTokenCount >= GameController.Instance.TargetTokenCount)
+            {
+                GameController.Instance.PassThisLevel();
+            }
         }
     }
 }
