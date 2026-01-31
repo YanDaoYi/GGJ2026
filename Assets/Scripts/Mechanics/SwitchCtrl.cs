@@ -38,14 +38,16 @@ namespace Assets.Scripts.Mechanics
         List<Tilemap> worldOuterTilemaps = new();
         List<Tilemap> worldTrueTilemaps = new();
 
-        TilemapRenderer[] worldInnerTileMapRenderers;
-        TilemapRenderer[] worldOuterTileMapRenderers;
+        Renderer[] worldInnerRenderers;
+        Renderer[] worldOuterRenderers;
         Dictionary<Vector2, List<ItemInfo>> ItemInfoDic = new();
 
         SpriteRenderer playerSpriteRenderer;
 
         int inMaskFullyCount = 0;
         bool inOuter = true;//当前在表世界
+        public int InMaskFullyCount => inMaskFullyCount;
+        public bool InOuter => inOuter;
 
         protected override void OnInit()
         {
@@ -72,8 +74,8 @@ namespace Assets.Scripts.Mechanics
             CollectTilemaps(world_Outer, worldOuterTilemaps);
             CollectTilemaps(world_True, worldTrueTilemaps);
 
-            worldInnerTileMapRenderers = world_Inner.GetComponentsInChildren<TilemapRenderer>();
-            worldOuterTileMapRenderers = world_Outer.GetComponentsInChildren<TilemapRenderer>();
+            worldInnerRenderers = world_Inner.GetComponentsInChildren<Renderer>();
+            worldOuterRenderers = world_Outer.GetComponentsInChildren<Renderer>();
 
             world_True.gameObject.SetActive(true);
 
@@ -169,13 +171,27 @@ namespace Assets.Scripts.Mechanics
             }
 
             //根据inOuter来控制遮罩的反转
-            foreach (var tileMapRenderer in worldInnerTileMapRenderers)
+            foreach (var renderer in worldInnerRenderers)
             {
-                tileMapRenderer.maskInteraction = inOuter ? SpriteMaskInteraction.VisibleInsideMask : SpriteMaskInteraction.VisibleOutsideMask;
+                if (renderer is TilemapRenderer tilemapRenderer)
+                {
+                    tilemapRenderer.maskInteraction = inOuter ? SpriteMaskInteraction.VisibleInsideMask : SpriteMaskInteraction.VisibleOutsideMask;
+                }
+                else if (renderer is SpriteRenderer spriteRenderer)
+                {
+                    spriteRenderer.maskInteraction = inOuter ? SpriteMaskInteraction.VisibleInsideMask : SpriteMaskInteraction.VisibleOutsideMask;
+                }
             }
-            foreach (var tileMapRenderer in worldOuterTileMapRenderers)
+            foreach (var tileMapRenderer in worldOuterRenderers)
             {
-                tileMapRenderer.maskInteraction = inOuter ? SpriteMaskInteraction.VisibleOutsideMask : SpriteMaskInteraction.VisibleInsideMask;
+                if (tileMapRenderer is TilemapRenderer tilemapRenderer)
+                {
+                    tilemapRenderer.maskInteraction = inOuter ? SpriteMaskInteraction.VisibleOutsideMask : SpriteMaskInteraction.VisibleInsideMask;
+                }
+                else if (tileMapRenderer is SpriteRenderer spriteRenderer)
+                {
+                    spriteRenderer.maskInteraction = inOuter ? SpriteMaskInteraction.VisibleOutsideMask : SpriteMaskInteraction.VisibleInsideMask;
+                }
             }
 
             //根据isOn和inMaskFullyCount来控制player的遮罩交互
