@@ -6,6 +6,8 @@ using static Platformer.Core.Simulation;
 using Platformer.Model;
 using Platformer.Core;
 using UnityEngine.InputSystem;
+using Assets.Scripts.Audio;
+using Assets.Scripts.Mechanics;
 
 namespace Platformer.Mechanics
 {
@@ -15,9 +17,7 @@ namespace Platformer.Mechanics
     /// </summary>
     public class PlayerController : KinematicObject
     {
-        public AudioClip jumpAudio;
-        public AudioClip respawnAudio;
-        public AudioClip ouchAudio;
+        public AudioConfigs AudioConfigs;
 
         /// <summary>
         /// Max horizontal speed of the player.
@@ -50,6 +50,7 @@ namespace Platformer.Mechanics
         private InputAction m_JumpAction;
 
         public Bounds Bounds => collider2d.bounds;
+        public bool InOuter => SwitchCtrl.Singleton.InOuter ^ (SwitchCtrl.Singleton.InMaskFullyCount > 0);
 
         void Awake()
         {

@@ -13,8 +13,9 @@ namespace Platformer.Gameplay
 
         public override void Execute()
         {
-            if (player.audioSource && player.jumpAudio)
-                player.audioSource.PlayOneShot(player.jumpAudio);
+            var audioConfig = player.InOuter ? player.AudioConfigs.OuterAudioConfigs : player.AudioConfigs.InnerAudioConfigs;
+            if (player.audioSource && audioConfig.jumpAudio)
+                player.audioSource.PlayOneShot(audioConfig.jumpAudio);
         }
     }
 }

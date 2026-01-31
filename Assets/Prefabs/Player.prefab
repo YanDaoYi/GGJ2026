@@ -55,9 +55,7 @@ MonoBehaviour:
   minGroundNormalY: 0.9
   gravityModifier: 1.5
   velocity: {x: 0, y: 0}
-  jumpAudio: {fileID: 8300000, guid: 67975c08d56ceb147bad38572d805aa8, type: 3}
-  respawnAudio: {fileID: 8300000, guid: e18959d46b63f3c4c8cc020a433cf848, type: 3}
-  ouchAudio: {fileID: 8300000, guid: 6c05149e5a2fba64ba172e25a61074b7, type: 3}
+  AudioConfigs: {fileID: 11400000, guid: 95ba413ab98365b4c9d2ed7e0453a4e3, type: 2}
   maxSpeed: 3
   jumpTakeOffSpeed: 6
   jumpState: 0

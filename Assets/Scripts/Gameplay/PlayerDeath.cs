@@ -23,8 +23,9 @@ namespace Platformer.Gameplay
                 // player.collider.enabled = false;
                 player.controlEnabled = false;
 
-                if (player.audioSource && player.ouchAudio)
-                    player.audioSource.PlayOneShot(player.ouchAudio);
+                var audioConfig = player.InOuter ? player.AudioConfigs.OuterAudioConfigs : player.AudioConfigs.InnerAudioConfigs;
+                if (player.audioSource && audioConfig.deathAudio)
+                    player.audioSource.PlayOneShot(audioConfig.deathAudio);
                 player.animator.SetTrigger("hurt");
                 player.animator.SetBool("dead", true);
                 Simulation.Schedule<PlayerSpawn>(2);
