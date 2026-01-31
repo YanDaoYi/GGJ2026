@@ -34,6 +34,8 @@ namespace Assets.Scripts.Mechanics
         List<Tilemap> worldOuterTilemaps = new();
         List<Tilemap> worldTrueTilemaps = new();
 
+        int inMaskCount = 0;
+        bool inOuter = true;//当前在表世界
         bool maskIsChange = false;
 
         protected override void OnInit()
@@ -102,8 +104,8 @@ namespace Assets.Scripts.Mechanics
                     Vector3Int gridPos = new(x, y, 0);
                     // world pos
                     Vector3 centerWorldPos = world_Inner.CellToWorld(gridPos) + world_Inner.cellSize * 0.5f;
-                    //bool showInner = IsOn; //test
                     bool showInner = IsOn && CheckInMask(centerWorldPos);
+                    if (!inOuter) showInner = !showInner;
 
                     for (int i = 0; i < worldTrueTilemaps.Count; i++)
                     {
@@ -136,6 +138,7 @@ namespace Assets.Scripts.Mechanics
         {
             if (!maskMonoSet.Contains(maskMono))
             {
+                maskMono.EventEmitter.TriggerEnter += OnEnterMask;
                 maskMonoSet.Add(maskMono);
             }
         }
@@ -144,7 +147,28 @@ namespace Assets.Scripts.Mechanics
         {
             if (maskMonoSet.Contains(maskMono))
             {
+                maskMono.EventEmitter.TriggerEnter -= OnEnterMask;
                 maskMonoSet.Remove(maskMono);
+            }
+        }
+
+        void OnEnterMask(Collider2D collider)
+        {
+            inMaskCount++;
+        }
+
+        void OnExitMask(Collider2D collider)
+        {
+            inMaskCount--;
+
+            //离开最后一个遮罩时
+            if (inMaskCount == 0)
+            {
+                if (isOn)
+                {
+                    inOuter = !inOuter;
+                    RebuildTrueWorld();
+                }
             }
         }
     }

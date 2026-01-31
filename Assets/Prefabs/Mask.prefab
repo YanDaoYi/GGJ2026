@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3361611273733521180}
   - component: {fileID: 1962899422013126553}
   - component: {fileID: 7272318470160723865}
+  - component: {fileID: 5398716110461815812}
   m_Layer: 6
   m_Name: Mask
   m_TagString: Untagged
@@ -100,3 +101,18 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &5398716110461815812
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 340417382508440564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56f642cba848c764e9ba5786828f166c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UnityToolkit.Trigger2DEventEmitter
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 128
