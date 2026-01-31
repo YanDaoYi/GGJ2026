@@ -10,6 +10,8 @@ namespace Assets.Scripts.Mechanics
         public SpriteMask SpriteMask { get; private set; }
         BoxCollider2D _collider;
 
+        public int LastTfHash { get; set; } = 0;
+
         void Awake()
         {
             EventEmitter = GetComponentInChildren<Trigger2DEventEmitter>();

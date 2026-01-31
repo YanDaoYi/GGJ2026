@@ -31,6 +31,7 @@ namespace Platformer.UI
 
         void OnEnable()
         {
+            mainMenu = MainUIController.Singleton;
             _ToggleMainMenu(showMainCanvas);
             m_MenuAction = InputSystem.actions.FindAction("Player/Menu");
         }

@@ -128,27 +128,34 @@ namespace Assets.Scripts.Mechanics
 
         private void FixedUpdate()
         {
-            isOn = m_SwitchAction.IsPressed();
             bool needRebuild = false;
 
             if (isOn != isOn_last) needRebuild = true;
             else
             {
-                //todo mask移动或者缩放时也需要重建
+                foreach (var maskMono in maskMonoSet)
+                {
+                    int stamp = GetTargetStamp(maskMono.transform);
+                    if (maskMono.LastTfHash != stamp)
+                    {
+                        maskMono.LastTfHash = stamp;
+                        needRebuild = true;
+                        break;
+                    }
+                }
             }
 
             if (needRebuild) RebuildTrueWorld();
 
-            //控制各个mask的Spritemask的显示与否
-            foreach (var maskMono in maskMonoSet)
-            {
-                maskMono.SpriteMask.enabled = isOn;
-            }
-
-            //根据inOuter来控制遮罩的反转
-
-
             isOn_last = isOn;
+        }
+
+        private void Update()
+        {
+            if (m_SwitchAction.WasPerformedThisFrame())
+            {
+                isOn = !isOn;
+            }
         }
 
         private void LateUpdate()
@@ -172,6 +179,7 @@ namespace Assets.Scripts.Mechanics
 
         void RebuildTrueWorld()
         {
+            Debug.Log("RebuildTrueWorld");
             for (int x = minGridPos.x; x <= maxGridPos.x; x++)
                 for (int y = minGridPos.y; y <= maxGridPos.y; y++)
                 {
@@ -257,6 +265,42 @@ namespace Assets.Scripts.Mechanics
                     inOuter = !inOuter;
                     RebuildTrueWorld();
                 }
+            }
+        }
+
+
+        /// <summary>
+        /// 把 target 的 transform值 压成一个 int，用于每帧快速比较
+        /// </summary>
+        private int GetTargetStamp(Transform tf)
+        {
+            // 将transform值hash
+            List<float> valList = new()
+            {
+                tf.position.x,
+                tf.position.y,
+                tf.position.z,
+                tf.rotation.x,
+                tf.rotation.y,
+                tf.rotation.z,
+                tf.rotation.w,
+                tf.localScale.x,
+                tf.localScale.y,
+                tf.localScale.z
+            };
+
+            unchecked
+            {
+                int h = 17;
+                for (int i = 0; i < valList.Count; i++)
+                {
+                    // 量化一下，避免浮点抖动导致每帧变化
+                    int x = Mathf.RoundToInt(valList[i] * 1000f);
+
+                    h = h * 31 + x;
+                }
+
+                return h;
             }
         }
     }
