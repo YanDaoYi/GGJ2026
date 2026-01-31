@@ -8022,7 +8022,7 @@ PrefabInstance:
     - target: {fileID: 114230831923080080, guid: 7d60c822c3f1b408ea7a00ecdb5e047a,
         type: 3}
       propertyPath: jumpTakeOffSpeed
-      value: 5.5
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 6181569720490489485, guid: 7d60c822c3f1b408ea7a00ecdb5e047a, type: 3}
