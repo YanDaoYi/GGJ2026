@@ -1,14 +1,17 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityToolkit;
 
 namespace Platformer.UI
 {
     /// <summary>
     /// A simple controller for switching between UI panels.
     /// </summary>
-    public class MainUIController : MonoBehaviour
+    public class MainUIController : MonoSingleton<MainUIController>
     {
+        protected override bool DontDestroyOnLoad() =>true;
+
         public GameObject[] panels;
 
         public void SetActivePanel(int index)

@@ -37,11 +37,13 @@ namespace Assets.Scripts.Mechanics
         List<Tilemap> worldInnerTilemaps = new();
         List<Tilemap> worldOuterTilemaps = new();
         List<Tilemap> worldTrueTilemaps = new();
+
+        TilemapRenderer[] worldInnerTileMapRenderers;
+        TilemapRenderer[] worldOuterTileMapRenderers;
         Dictionary<Vector2, List<ItemInfo>> ItemInfoDic = new();
 
         int inMaskFullyCount = 0;
         bool inOuter = true;//当前在表世界
-        bool maskIsChange = false;
 
         protected override void OnInit()
         {
@@ -51,6 +53,11 @@ namespace Assets.Scripts.Mechanics
 
             InitMap();
             RebuildTrueWorld();
+        }
+
+        protected override void OnDispose()
+        {
+            base.OnDispose();
         }
 
         void InitMap()
@@ -63,14 +70,17 @@ namespace Assets.Scripts.Mechanics
             CollectTilemaps(world_Outer, worldOuterTilemaps);
             CollectTilemaps(world_True, worldTrueTilemaps);
 
+            worldInnerTileMapRenderers = world_Inner.GetComponentsInChildren<TilemapRenderer>();
+            worldOuterTileMapRenderers = world_Outer.GetComponentsInChildren<TilemapRenderer>();
+
             world_True.gameObject.SetActive(true);
 
-            for (int i = 0; i < worldTrueTilemaps.Count; i++)
-            {
-                worldInnerTilemaps[i].GetComponent<TilemapRenderer>().enabled = false;
-                worldOuterTilemaps[i].GetComponent<TilemapRenderer>().enabled = false;
-                worldTrueTilemaps[i].GetComponent<TilemapRenderer>().enabled = true;
-            }
+            //for (int i = 0; i < worldTrueTilemaps.Count; i++)
+            //{
+            //    worldInnerTilemaps[i].GetComponent<TilemapRenderer>().enabled = false;
+            //    worldOuterTilemaps[i].GetComponent<TilemapRenderer>().enabled = false;
+            //    worldTrueTilemaps[i].GetComponent<TilemapRenderer>().enabled = true;
+            //}
 
             //计算相机内覆盖了网格的哪些坐标
             Vector3 cameraPos = Camera.main.transform.position;
@@ -118,18 +128,58 @@ namespace Assets.Scripts.Mechanics
 
         private void FixedUpdate()
         {
-            isOn = m_SwitchAction.IsPressed();
-            if (isOn != isOn_last)
+            bool needRebuild = false;
+
+            if (isOn != isOn_last) needRebuild = true;
+            else
             {
-                //Debug.Log($"SwitchCtrl FixedUpdate isOn={isOn}");
-                RebuildTrueWorld();
+                foreach (var maskMono in maskMonoSet)
+                {
+                    int stamp = GetTargetStamp(maskMono.transform);
+                    if (maskMono.LastTfHash != stamp)
+                    {
+                        maskMono.LastTfHash = stamp;
+                        needRebuild = true;
+                        break;
+                    }
+                }
             }
+
+            if (needRebuild) RebuildTrueWorld();
 
             isOn_last = isOn;
         }
 
+        private void Update()
+        {
+            if (m_SwitchAction.WasPerformedThisFrame())
+            {
+                isOn = !isOn;
+            }
+        }
+
+        private void LateUpdate()
+        {
+            //根据isOn来控制遮罩的启用
+            foreach (var maskMono in maskMonoSet)
+            {
+                maskMono.SpriteMask.enabled = isOn;
+            }
+
+            //根据inOuter来控制遮罩的反转
+            foreach (var tileMapRenderer in worldInnerTileMapRenderers)
+            {
+                tileMapRenderer.maskInteraction = inOuter ? SpriteMaskInteraction.VisibleInsideMask : SpriteMaskInteraction.VisibleOutsideMask;
+            }
+            foreach (var tileMapRenderer in worldOuterTileMapRenderers)
+            {
+                tileMapRenderer.maskInteraction = inOuter ? SpriteMaskInteraction.VisibleOutsideMask : SpriteMaskInteraction.VisibleInsideMask;
+            }
+        }
+
         void RebuildTrueWorld()
         {
+            Debug.Log("RebuildTrueWorld");
             for (int x = minGridPos.x; x <= maxGridPos.x; x++)
                 for (int y = minGridPos.y; y <= maxGridPos.y; y++)
                 {
@@ -215,6 +265,42 @@ namespace Assets.Scripts.Mechanics
                     inOuter = !inOuter;
                     RebuildTrueWorld();
                 }
+            }
+        }
+
+
+        /// <summary>
+        /// 把 target 的 transform值 压成一个 int，用于每帧快速比较
+        /// </summary>
+        private int GetTargetStamp(Transform tf)
+        {
+            // 将transform值hash
+            List<float> valList = new()
+            {
+                tf.position.x,
+                tf.position.y,
+                tf.position.z,
+                tf.rotation.x,
+                tf.rotation.y,
+                tf.rotation.z,
+                tf.rotation.w,
+                tf.localScale.x,
+                tf.localScale.y,
+                tf.localScale.z
+            };
+
+            unchecked
+            {
+                int h = 17;
+                for (int i = 0; i < valList.Count; i++)
+                {
+                    // 量化一下，避免浮点抖动导致每帧变化
+                    int x = Mathf.RoundToInt(valList[i] * 1000f);
+
+                    h = h * 31 + x;
+                }
+
+                return h;
             }
         }
     }
