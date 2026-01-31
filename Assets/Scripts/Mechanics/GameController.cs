@@ -21,6 +21,7 @@ namespace Platformer.Mechanics
         public PlatformerModel model = Simulation.GetModel<PlatformerModel>();
 
         public event System.Action OnLevelPassed = delegate { };
+        public event System.Action OnLevelFailed = delegate { };
         public int TargetTokenCount { get; set; } = 0;
         public int PickedUpTokenCount { get; set; } = 0;
 
@@ -43,6 +44,11 @@ namespace Platformer.Mechanics
         public void PassThisLevel()
         {
             OnLevelPassed?.Invoke();
+        }
+
+        public void FailedThiwLevel()
+        {
+            OnLevelFailed?.Invoke();
         }
     }
 }

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityToolkit;
 
@@ -13,14 +14,27 @@ namespace Platformer.Mechanics
         List<string> levelNames;
         int curLevel = 0;
 
+        private InputAction m_ResetAction;
+
         protected override bool DontDestroyOnLoad() => true;
 
         protected override void OnInit()
         {
             EnterLevel(0);
+
+            m_ResetAction = InputSystem.actions.FindAction("Player/Reset");
+            m_ResetAction.Enable();
         }
 
-        async Task EnterLevel(int idx)
+        private void Update()
+        {
+            if (m_ResetAction.WasPressedThisFrame())
+            {
+                OnResetLevel();
+            }
+        }
+
+        async void EnterLevel(int idx)
         {
             curLevel = idx;
             if (curLevel < levelNames.Count)
@@ -39,6 +53,7 @@ namespace Platformer.Mechanics
         void OnEnterLevel()
         {
             GameController.Instance.OnLevelPassed += OnPassLevel;
+            GameController.Instance.OnLevelFailed += OnFailLevel;
         }
 
         void OnExitLevel()
@@ -46,12 +61,23 @@ namespace Platformer.Mechanics
             if (GameController.Instance)
             {
                 GameController.Instance.OnLevelPassed -= OnPassLevel;
+                GameController.Instance.OnLevelFailed -= OnFailLevel;
             }
         }
 
         void OnPassLevel()
         {
             EnterLevel(curLevel + 1);
+        }
+
+        void OnFailLevel()
+        {
+            EnterLevel(curLevel);
+        }
+
+        void OnResetLevel()
+        {
+            EnterLevel(curLevel);
         }
     }
 }
