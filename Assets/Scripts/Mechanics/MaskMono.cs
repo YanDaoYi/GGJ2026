@@ -7,11 +7,13 @@ namespace Assets.Scripts.Mechanics
     public class MaskMono : MonoBehaviour
     {
         public Trigger2DEventEmitter EventEmitter { get; private set; }
+        public SpriteMask SpriteMask { get; private set; }
         BoxCollider2D _collider;
 
         void Awake()
         {
             EventEmitter = GetComponentInChildren<Trigger2DEventEmitter>();
+            SpriteMask = GetComponentInChildren<SpriteMask>();
             Assert.IsNotNull(EventEmitter);
             SwitchCtrl.Singleton.RegisterMask(this);
         }
