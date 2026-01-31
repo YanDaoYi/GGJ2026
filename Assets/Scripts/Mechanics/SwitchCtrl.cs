@@ -101,7 +101,8 @@ namespace Assets.Scripts.Mechanics
                 {
                     Vector3Int gridPos = new(x, y, 0);
                     // world pos
-                    Vector3 centerWorldPos = world_Inner.CellToWorld(gridPos) + world_Inner.cellSize / 2;
+                    Vector3 centerWorldPos = world_Inner.CellToWorld(gridPos) + world_Inner.cellSize * 0.5f;
+                    //bool showInner = IsOn; //test
                     bool showInner = IsOn && CheckInMask(centerWorldPos);
 
                     for (int i = 0; i < worldTrueTilemaps.Count; i++)

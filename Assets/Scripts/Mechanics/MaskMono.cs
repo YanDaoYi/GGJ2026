@@ -4,6 +4,14 @@ namespace Assets.Scripts.Mechanics
 {
     public class MaskMono : MonoBehaviour
     {
+        void Awake()
+        {
+            SwitchCtrl.Singleton.RegisterMask(this);
+        }
+        void OnDestroy()
+        {
+            SwitchCtrl.Singleton.UnregisterMask(this);
+        }
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.green;
